@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""自动组合操作并导出 TorchScript + ONNX 模型
+"""Compose operator sequences and export TorchScript + ONNX models.
 
-用法示例:
-  python tools/build_and_export_composed_models.py --ops add,sub,div,exp,log,pow,sigmoid,softmax --combo-len 2 --out models/auto_generated --min-count 10
+Example usage:
+    python tools/build_and_export_composed_models.py --ops add,sub,div,exp,log,pow,sigmoid,softmax --combo-len 2 --out models/auto_generated --min-count 10
 
-脚本会在指定输出目录生成模型文件（.pt 和 .onnx）并写入 models_meta.json。
+This script writes .pt and .onnx files to the specified output directory and creates a models_meta.json file describing exports.
 """
 import argparse
 import itertools

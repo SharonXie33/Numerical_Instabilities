@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""统一评测入口：支持 pytorch, torch_compile, onnx, tvm, tensorrt（缺少时跳过）
+"""Unified evaluation entrypoint supporting multiple frameworks.
 
-输出 summary.json 与 summary.csv（按 model × framework × dataset 聚合）。
+Supported frameworks: pytorch, torch_compile, onnx. TVM and TensorRT are best-effort and will be skipped if unavailable.
 
-示例：
-  python runners/run_multi_framework.py --models models/auto_generated/models_meta.json --inputs "parsed_klee_inj_all/*/inputs.csv" --frameworks pytorch,onnx --out results/summary_multi
+This script writes a `summary.json` and `summary.csv` aggregating results by model × framework × dataset.
+
+Example:
+    python runners/run_multi_framework.py --models models/auto_generated/models_meta.json --inputs "parsed_klee_inj_all/*/inputs.csv" --frameworks pytorch,onnx --out results/summary_multi
 
 """
 import argparse
