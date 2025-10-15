@@ -46,12 +46,23 @@ Reproducing larger FPGen runs
 
 Key visualizations
 --
-The `report/` directory contains PNGs and CSVs summarizing aggregated results. Key images (already generated in this repo):
+The `report/` directory contains PNGs and CSVs summarizing aggregated results. Key images (already generated in this repo) are shown below.
 
-- `report/instability_by_op_bar.png` — per-model counts of NaN/Inf/errors
-- `report/framework_diff_heatmap.png` — heatmap comparing frameworks vs. models
-- `report/framework_counts_bar.png` — per-framework aggregate counts
-- `report/model_nan_percent.png` — normalized NaN percentage per model
+### Instability by model (bar chart)
+![Instability by model](report/instability_by_op_bar.png)
+Per-model counts of NaN/Inf/errors.
+
+### Framework vs Model heatmap
+![Framework vs Model heatmap](report/framework_diff_heatmap.png)
+Heatmap comparing NaN/Inf counts across frameworks for each model.
+
+### Framework totals (bar chart)
+![Framework totals](report/framework_counts_bar.png)
+Aggregate counts of issues per framework.
+
+### Model NaN percentage
+![Model NaN percent](report/model_nan_percent.png)
+Normalized fraction of inputs producing NaN per model.
 
 How to run custom experiments
 --
