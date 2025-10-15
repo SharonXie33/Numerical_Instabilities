@@ -1,0 +1,5 @@
+run,model,framework,dataset,total,num_nan,num_inf,num_error
+mock_run_2,model_div,onnx,klee-out-2,3,2,0,0
+mock_run_2,model_log,onnx,klee-out-2,3,0,1,0
+mock_run_1,model_div,onnx,klee-out-1,5,1,0,0
+mock_run_1,model_div,pytorch,klee-out-1,5,0,0,0

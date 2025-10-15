@@ -1,0 +1,4 @@
+run,model,dataset,frameworks,stats_json,max_nan,max_inf,max_error
+mock_run_2,model_div,klee-out-2,onnx,"{""onnx"": {""total"": 3, ""num_nan"": 2, ""num_inf"": 0, ""num_error"": 0}}",2,0,0
+mock_run_2,model_log,klee-out-2,onnx,"{""onnx"": {""total"": 3, ""num_nan"": 0, ""num_inf"": 1, ""num_error"": 0}}",0,1,0
+mock_run_1,model_div,klee-out-1,onnx|pytorch,"{""onnx"": {""total"": 5, ""num_nan"": 1, ""num_inf"": 0, ""num_error"": 0}, ""pytorch"": {""total"": 5, ""num_nan"": 0, ""num_inf"": 0, ""num_error"": 0}}",1,0,0

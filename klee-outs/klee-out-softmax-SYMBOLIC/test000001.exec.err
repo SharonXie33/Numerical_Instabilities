@@ -1,0 +1,6 @@
+Error: external call with symbolic argument: expf
+File: /home/fptesting/FPTesting/example/softmax-SYMBOLIC.c
+Line: 13
+assembly.ll line: 86
+Stack: 
+	#000000086 in main () at /home/fptesting/FPTesting/example/softmax-SYMBOLIC.c:13

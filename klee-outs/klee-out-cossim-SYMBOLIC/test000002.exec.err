@@ -1,0 +1,6 @@
+Error: external call with symbolic argument: printf
+File: /home/fptesting/FPTesting/example/cossim-SYMBOLIC.c
+Line: 18
+assembly.ll line: 115
+Stack: 
+	#000000115 in main () at /home/fptesting/FPTesting/example/cossim-SYMBOLIC.c:18

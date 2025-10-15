@@ -1,0 +1,17 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Results and heavy artifacts
+results/
+parsed_klee_inj_all/
+models/
+*.tgz
+
+# keep report images but ignore other data
+!report/*.png
+
+# editor files
+.vscode/
+*.swp

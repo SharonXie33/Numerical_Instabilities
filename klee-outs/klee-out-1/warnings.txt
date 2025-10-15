@@ -1,0 +1,16 @@
+KLEE: WARNING: undefined reference to function: ceil
+KLEE: WARNING: undefined reference to function: fprintf
+KLEE: WARNING: undefined reference to function: log10
+KLEE: WARNING: undefined reference to function: pow
+KLEE: WARNING: undefined reference to function: putchar
+KLEE: WARNING: undefined reference to variable: stdout
+KLEE: WARNING ONCE: calling external: putchar(49)
+KLEE: WARNING ONCE: calling external: fprintf(140737441395712, 20532144, (FAdd w64 (FPExt w64 (FMul w32 (FDiv w32 (ReadLSB w32 0 input)
+                                          3.40282347E+38)
+                                1.0E+2))
+           (FAdd w64 (FPExt w64 (FMul w32 (FDiv w32 (ReadLSB w32 4 input)
+                                                    3.40282347E+38)
+                                          1.0E+2))
+                     (FPExt w64 (FMul w32 (FDiv w32 (ReadLSB w32 8 input)
+                                                    3.40282347E+38)
+                                          1.0E+2)))))

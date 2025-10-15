@@ -1,0 +1,3 @@
+Error: external call with symbolic argument: printf
+Stack: 
+	#000000115 in main ()

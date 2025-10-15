@@ -1,0 +1,19 @@
+array x[12] : w32 -> w8 = symbolic
+array y[12] : w32 -> w8 = symbolic
+(query [(Eq false
+             (FOEq (FMul w32 (FSqrt w32 (FAdd w32 (FAdd w32 (FAdd w32 0
+                                                                      (FMul w32 N0:(ReadLSB w32 0 x)
+                                                                                N0))
+                                                            (FMul w32 N1:(ReadLSB w32 4 x)
+                                                                      N1))
+                                                  (FMul w32 N2:(ReadLSB w32 8 x)
+                                                            N2)))
+                             (FSqrt w32 (FAdd w32 (FAdd w32 (FAdd w32 0
+                                                                      (FMul w32 N3:(ReadLSB w32 0 y)
+                                                                                N3))
+                                                            (FMul w32 N4:(ReadLSB w32 4 y)
+                                                                      N4))
+                                                  (FMul w32 N5:(ReadLSB w32 8 y)
+                                                            N5))))
+                   0.0E+0))]
+        false)

@@ -1,0 +1,6 @@
+Error: external call with symbolic argument: printf
+File: /home/fptesting/FPTesting/example/div-SYMBOLIC.c
+Line: 11
+assembly.ll line: 44
+Stack: 
+	#000000044 in main () at /home/fptesting/FPTesting/example/div-SYMBOLIC.c:11

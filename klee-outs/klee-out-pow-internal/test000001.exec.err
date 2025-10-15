@@ -1,0 +1,6 @@
+Error: external call with symbolic argument: powf
+File: /home/fptesting/FPTesting/example/pow-SYMBOLIC.c
+Line: 10
+assembly.ll line: 40
+Stack: 
+	#000000040 in main () at /home/fptesting/FPTesting/example/pow-SYMBOLIC.c:10

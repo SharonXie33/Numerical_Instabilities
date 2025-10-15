@@ -1,0 +1,6 @@
+KLEE: WARNING: undefined reference to function: ceil
+KLEE: WARNING: undefined reference to function: log10
+KLEE: WARNING: undefined reference to function: logf
+KLEE: WARNING: undefined reference to function: pow
+KLEE: WARNING: undefined reference to function: printf
+KLEE: WARNING: undefined reference to function: putchar

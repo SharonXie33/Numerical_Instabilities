@@ -1,0 +1,18 @@
+/home/fptesting/klee-float/build/bin/klee -allow-external-sym-calls --max-solver-time=30 --max-time=30 --search=nurs:covnew add-SYMBOLIC.bc
+PID: 1210
+Started: 2025-09-23 21:31:41
+BEGIN searcher description
+WeightedRandomSearcher::CoveringNew
+END searcher description
+Finished: 2025-09-23 21:32:11
+Elapsed: 00:00:30
+KLEE: done: explored paths = 68
+KLEE: done: avg. constructs per query = 27
+KLEE: done: total queries = 85
+KLEE: done: valid queries = 28
+KLEE: done: invalid queries = 57
+KLEE: done: query cex = 85
+
+KLEE: done: total instructions = 3141
+KLEE: done: completed paths = 68
+KLEE: done: generated tests = 68

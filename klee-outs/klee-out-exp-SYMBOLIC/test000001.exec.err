@@ -1,0 +1,6 @@
+Error: external call with symbolic argument: expf
+File: /home/fptesting/FPTesting/example/exp-SYMBOLIC.c
+Line: 9
+assembly.ll line: 33
+Stack: 
+	#000000033 in main () at /home/fptesting/FPTesting/example/exp-SYMBOLIC.c:9

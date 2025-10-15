@@ -1,0 +1,20 @@
+/home/fptesting/FPTesting/src/klee-float/build/bin/klee --max-time=60 exp-long.inj.bc
+PID: 6427
+Started: 2025-09-25 08:58:07
+BEGIN searcher description
+<InterleavedSearcher> containing 2 searchers:
+RandomPathSearcher
+WeightedRandomSearcher::CoveringNew
+</InterleavedSearcher>
+END searcher description
+Finished: 2025-09-25 08:58:07
+Elapsed: 00:00:00
+KLEE: done: explored paths = 1
+KLEE: done: total queries = 0
+KLEE: done: valid queries = 0
+KLEE: done: invalid queries = 0
+KLEE: done: query cex = 0
+
+KLEE: done: total instructions = 36
+KLEE: done: completed paths = 1
+KLEE: done: generated tests = 1
