@@ -1,99 +1,98 @@
-# Numerical Instabilities for AI Compilers — FPGen + KLEE
+# Numerical Instabilities Experiment Overview
 
-Overview
---
-This repository provides an automated pipeline to discover and compare numerical instabilities (NaN / Inf / overflow / underflow / other runtime errors) across operator compositions and multiple AI runtimes. The goal is reproducible experiments and clear, shareable summaries.
+This repository hosts the full workflow we used to study floating-point instabilities: composite model generation, KLEE-derived inputs, multi-framework execution, aggregation, visualization, and a browser-ready dashboard. The instructions below explain how to reproduce the entire pipeline from scratch and how to serve the dashboard for demos.
 
-Main features
---
-- Symbolic-input generation using FPGen/KLEE (container scripts included)
-- Automated generation of operator-composition models (PyTorch -> TorchScript + ONNX)
-- Multi-backend evaluation (PyTorch, ONNX Runtime; optional TVM / TensorRT)
-- Aggregation of per-run summaries and visualization generation (CSV, Markdown, PNG)
+> **Environment assumption**: create and activate a virtual environment in the repo root. For example:
+> ```bash
+> python3 -m venv .venv
+> source .venv/bin/activate
+> ```
+> Every command that follows is executed from `Numerical_instabilities/`.
 
-Repository layout
---
-- `tools/` — model generation, ONNX evaluation and summary tools
-- `runners/` — multi-framework runners and comparison utilities
-- `models/` — exported example models (TorchScript + ONNX)
-- `parsed_klee_inj_all/` — parsed FPGen/KLEE input CSVs (sample or real)
-- `results/` — per-run outputs and summaries
-- `report/` — aggregated CSVs, Markdown summary and PNG visualizations
-
-Requirements
---
-- Python 3.8+ (recommended: use a virtual environment)
-- PyTorch, ONNX, ONNX Runtime, NumPy, Matplotlib
-- For TVM / TensorRT evaluation: platform-specific installs (Linux + NVIDIA/CUDA for TensorRT)
-
-Quick start (minimal reproducible example)
---
-From the repository root, using your virtual environment or system python:
+## ⚡ One-command pipeline (recommended)
 
 ```bash
-python -m pip install -r tools/requirements.txt
-python tools/build_and_export_composed_models.py --out models/auto_generated --min-count 10 --combo-len 3
-python tools/run_onnx_evaluator.py --models models/auto_generated/models_meta.json --inputs parsed_klee_inj_all --out results/models_eval
-python tools/compute_summary_stats.py --dir results/models_eval --out results/models_summary
-python runners/compare_summaries.py --root results/runs --out report
-python tools/visualize_results.py --report-dir report --out-dir report
+bash run_pipeline.sh
+# or pin the interpreter
+# PYTHON_BIN=.venv/bin/python bash run_pipeline.sh
 ```
 
-Reproducing larger FPGen runs
---
-- FPGen/KLEE long runs are expected to run inside the provided container scripts (see `run_symbolics.sh` and `generate_inputs.sh`).
-- Use the container helpers to compile/link bitcode and run KLEE; then use the provided parsers to convert `.ktest` outputs into CSVs under `parsed_klee_inj_all/`.
+The script installs dependencies, rebuilds composite models, runs all evaluators, aggregates results, exports PNGs, and regenerates `report/dashboard/dashboard_data.json`. When it finishes, launch a static server (`python -m http.server 8000`) and open `http://localhost:8000/report/dashboard/` to see the latest visuals.
 
-Key visualizations
---
-The `report/` directory contains PNGs and CSVs summarizing aggregated results. Key images (already generated in this repo) are shown below.
+## Step-by-step pipeline (manual control)
 
-### Instability by model (bar chart)
-![Instability by model](report/instability_by_op_bar.png)
-Per-model counts of NaN/Inf/errors.
+Use these steps when you want to re-run a specific stage. Otherwise, the one-command pipeline already performs 2–9 in order.
 
-### Framework vs Model heatmap
-![Framework vs Model heatmap](report/framework_diff_heatmap.png)
-Heatmap comparing NaN/Inf counts across frameworks for each model.
+1. **Install Python dependencies**
+	```bash
+	python -m pip install -r tools/requirements.txt
+	```
+2. **Build and export composed models**
+	```bash
+	python tools/build_and_export_composed_models.py \
+	  --out models/auto_generated \
+	  --min-count 10 \
+	  --combo-len 3
+	```
+	Outputs TorchScript/ONNX variants plus `models_meta.json`.
+3. **Run the ONNX evaluator (single-framework stats)**
+	```bash
+	python tools/run_onnx_evaluator.py \
+	  --models models/auto_generated/models_meta.json \
+	  --inputs parsed_klee_inj_all \
+	  --out results/models_eval
+	```
+	Produces one JSON per model × dataset.
+4. **Summarize evaluator outputs**
+	```bash
+	python tools/compute_summary_stats.py \
+	  --dir results/models_eval \
+	  --out results/models_summary
+	```
+	Generates `models_summary.csv` and `.md`.
+5. **Execute multi-framework runs**
+	```bash
+	python runners/run_multi_framework.py \
+	  --models models/auto_generated/models_meta.json \
+	  --inputs "parsed_klee_inj_all/*/inputs.csv" \
+	  --frameworks pytorch,onnx \
+	  --out results/runs/run_latest
+	```
+	Produces `summary.json`/`.csv` under `results/runs/run_latest/`.
+6. **Aggregate every run into the report folder**
+	```bash
+	python runners/compare_summaries.py \
+	  --root results/runs \
+	  --out report
+	```
+	Writes `aggregated_runs.csv`, `framework_diff.csv`, and `summary.md`.
+7. **Export PNG charts (optional but recommended)**
+	```bash
+	python tools/visualize_results.py --report-dir report --out-dir report
+	```
+8. **Generate dashboard data + static assets**
+	```bash
+	python tools/generate_dashboard.py \
+	  --report-dir report \
+	  --model-summary results/models_summary/models_summary.csv \
+	  --out report/dashboard
+	```
+	Refreshes `dashboard_data.json` and ensures `index.html`, `styles.css`, and `app.js` are up to date.
+9. **Serve the dashboard locally**
+	```bash
+	python -m http.server 8000
+	```
+	Visit `http://localhost:8000/report/dashboard/` to explore summary cards, stacked bars (NaN/Inf/Error), dataset stats, top-NaN lists, and the searchable detail table.
 
-### Framework totals (bar chart)
-![Framework totals](report/framework_counts_bar.png)
-Aggregate counts of issues per framework.
+##  Demo tips
 
-### Model NaN percentage
-![Model NaN percent](report/model_nan_percent.png)
-Normalized fraction of inputs producing NaN per model.
+- If the page says “Failed to load dashboard_data.json”, it usually means step 8 has not been run after the last pipeline execution; regenerate and refresh.
+- For classroom demos, pre-run the pipeline so the PNGs and dashboard load instantly, then keep the static server running in another terminal.
+- Run `PYTHON_BIN=.venv/bin/python bash run_pipeline.sh` when presenting on a lab machine with multiple Python versions to avoid surprises.
 
-How to run custom experiments
---
-1. Place or generate parsed FPGen/KLEE inputs under `parsed_klee_inj_all/` (CSV files).
-2. Ensure `models/` contains the models you want to evaluate and that `models_meta.json` lists them.
-3. Run the multi-framework runner:
+##  Troubleshooting
 
-```bash
-python runners/run_multi_framework.py --models models/auto_generated/models_meta.json --inputs "parsed_klee_inj_all/*/inputs.csv" --frameworks pytorch,onnx --out results/summary_multi
-```
+1. **TorchScript export warnings** – Legacy exporters print warnings; ignore them or switch to `torch.export(..., dynamo=True)` if needed.
+2. **UTC deprecation warning** – `generate_dashboard.py` calls `datetime.utcnow()`. The warning is harmless and will be addressed in a future patch.
+3. **Port already in use** – Change the server port: `python -m http.server 8080`.
 
-4. Aggregate multiple runs and generate the report:
-
-```bash
-python runners/compare_summaries.py --root results/runs --out report
-python tools/visualize_results.py --report-dir report --out-dir report
-```
-
-Notes & limitations
---
-- TVM and TensorRT support require platform-specific installations and are optional; the scripts will skip unavailable backends.
-- Large model artifacts, raw KLEE outputs and large result directories should be excluded from the published repository (use `.gitignore`).
-
-Contributing
---
-- Contributions are welcome via pull requests. When adding models or large reproducer data, include a short descriptor and keep large files out of git.
-
-Support / Issues
---
-- For reproducibility questions, open an issue with a minimal reproducer (model + inputs) and environment details (OS, Python, GPU).
-
-License
---
-- Add a `LICENSE` file at the repository root to indicate the intended license (e.g., MIT, Apache 2.0).

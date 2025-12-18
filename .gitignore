@@ -3,15 +3,27 @@
 __pycache__/
 *.pyc
 
-# Results and heavy artifacts
-results/
-parsed_klee_inj_all/
-models/
-*.tgz
-
-# keep report images but ignore other data
-!report/*.png
-
-# editor files
+# System / Editor
+.DS_Store
 .vscode/
 *.swp
+.tmp/
+
+# Build artifacts & Temporary data
+results/
+report/
+!report/README.md
+!report/dashboard/index.html
+!report/dashboard/styles.css
+!report/dashboard/app.js
+models/auto_generated/
+injections.bc
+*.bc
+
+# Large KLEE outputs
+klee-outs*/
+*.tgz
+
+# Keep parsed inputs for demo reproducibility
+# parsed_klee_inj_all/ is intentionally tracked
+

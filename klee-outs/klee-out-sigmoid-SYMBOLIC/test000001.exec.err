@@ -1,6 +1,0 @@
-Error: external call with symbolic argument: expf
-File: /home/fptesting/FPTesting/example/sigmoid-SYMBOLIC.c
-Line: 8
-assembly.ll line: 31
-Stack: 
-	#000000031 in main () at /home/fptesting/FPTesting/example/sigmoid-SYMBOLIC.c:8

@@ -1,4 +1,0 @@
-KLEE: Using Z3 solver backend
-KLEE: Replacing function "__fpclassify" with "klee_internal_fpclassify"
-KLEE: ERROR: /home/fptesting/FPTesting/example/exp-SYMBOLIC.c:9: external call with symbolic argument: expf
-KLEE: NOTE: now ignoring this error at this location

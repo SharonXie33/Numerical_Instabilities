@@ -1,3 +1,0 @@
-Error: external call with symbolic argument: expf
-Stack: 
-	#000000031 in main ()
